@@ -48,21 +48,30 @@ class _AddTodoFormState extends State<AddTodoForm> {
             padding: const EdgeInsets.all(30.00),
             children: [
               TextFormField(
+
+
                 controller: titleController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey,
                   labelText: "E.g Clean house chores",
-                  hintText: "Todo Title"
+                  hintText: "Todo Title",
                 ),
+
+
                 validator: (value){
                   return value == null || value.isEmpty ? "Enter Title" : null;
                 },
               ),
+              SizedBox(height: 10),
               TextFormField(
                 controller: descController,
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey,
                     labelText: "E.g Clean house chores at 8:00 P.M",
                     hintText: "Todo Description"
                 ),
@@ -70,8 +79,11 @@ class _AddTodoFormState extends State<AddTodoForm> {
                   return value == null || value.isEmpty ? "Enter Description" : null;
                 },
               ),
-              const SizedBox(height: 400),
+              const SizedBox(height: 320),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueGrey
+                ),
                   onPressed:(){
                     if(FormKey.currentState!.validate()){
                       dbHelper!.insert(TodoModel(

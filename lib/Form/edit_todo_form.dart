@@ -61,6 +61,8 @@ class _EditTodoFormState extends State<EditTodoForm> {
                 controller: titleController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey,
                     labelText: "E.g Clean house chores",
                     hintText: "Todo Title"
                 ),
@@ -68,11 +70,14 @@ class _EditTodoFormState extends State<EditTodoForm> {
                   return value == null || value.isEmpty ? "Enter Title" : null;
                 },
               ),
+              SizedBox(height: 10),
               TextFormField(
                 controller: descController,
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey,
                     labelText: "E.g Clean house chores at 8:00 P.M",
                     hintText: "Todo Description"
                 ),
@@ -80,8 +85,11 @@ class _EditTodoFormState extends State<EditTodoForm> {
                   return value == null || value.isEmpty ? "Enter Description" : null;
                 },
               ),
-              const SizedBox(height: 400),
+              const SizedBox(height: 320),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.blueGrey
+                  ),
                   onPressed:(){
                     if(FormKey.currentState!.validate()){
                      if (widget.update == true){
