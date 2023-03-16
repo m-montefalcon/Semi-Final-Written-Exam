@@ -49,8 +49,20 @@ class _EditTodoFormState extends State<EditTodoForm> {
     final  descController = TextEditingController(text: widget.todoDesc);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Edit"),
+        title: Text("Edit Todo",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        elevation: 0.5,
+        iconTheme: IconThemeData(color: Colors.white),
+        flexibleSpace:Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[Theme.of(context).primaryColor, Theme.of(context).accentColor,]
+              )
+          ),
+        ),
       ),
       body: Form(
           key: FormKey,
@@ -62,7 +74,7 @@ class _EditTodoFormState extends State<EditTodoForm> {
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                     filled: true,
-                    fillColor: Colors.grey,
+                    fillColor: Colors.white,
                     labelText: "E.g Clean house chores",
                     hintText: "Todo Title"
                 ),
@@ -77,7 +89,7 @@ class _EditTodoFormState extends State<EditTodoForm> {
                 maxLines: 5,
                 decoration: const InputDecoration(
                     filled: true,
-                    fillColor: Colors.grey,
+                    fillColor: Colors.white,
                     labelText: "E.g Clean house chores at 8:00 P.M",
                     hintText: "Todo Description"
                 ),
@@ -88,7 +100,7 @@ class _EditTodoFormState extends State<EditTodoForm> {
               const SizedBox(height: 320),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.blueGrey
+                      primary: Colors.purple
                   ),
                   onPressed:(){
                     if(FormKey.currentState!.validate()){

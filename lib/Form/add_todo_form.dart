@@ -39,8 +39,20 @@ class _AddTodoFormState extends State<AddTodoForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text("FORM"),
+        title: Text("Home Page",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        elevation: 0.5,
+        iconTheme: IconThemeData(color: Colors.white),
+        flexibleSpace:Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[Theme.of(context).primaryColor, Theme.of(context).accentColor,]
+              )
+          ),
+        ),
       ),
       body: Form(
         key: FormKey,
@@ -54,7 +66,7 @@ class _AddTodoFormState extends State<AddTodoForm> {
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey,
+                  fillColor: Colors.white,
                   labelText: "E.g Clean house chores",
                   hintText: "Todo Title",
                 ),
@@ -71,7 +83,7 @@ class _AddTodoFormState extends State<AddTodoForm> {
                 maxLines: 5,
                 decoration: const InputDecoration(
                     filled: true,
-                    fillColor: Colors.grey,
+                    fillColor: Colors.white,
                     labelText: "E.g Clean house chores at 8:00 P.M",
                     hintText: "Todo Description"
                 ),
@@ -82,7 +94,7 @@ class _AddTodoFormState extends State<AddTodoForm> {
               const SizedBox(height: 320),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blueGrey
+                  primary: Colors.purple
                 ),
                   onPressed:(){
                     if(FormKey.currentState!.validate()){

@@ -1,10 +1,16 @@
 import 'dart:io';
 
+import 'package:dbassignment/Auth/auth.dart';
 import 'package:dbassignment/Database/db_handler.dart';
 import 'package:dbassignment/Form/add_todo_form.dart';
 import 'package:dbassignment/Form/edit_todo_form.dart';
+import 'package:dbassignment/Profile/educ_profile.dart';
 import 'package:dbassignment/Profile/home_profile.dart';
 import 'package:dbassignment/Profile/profile_page.dart';
+import 'package:dbassignment/pages/login_page.dart';
+import 'package:dbassignment/pages/registration_page.dart';
+import 'package:dbassignment/pages/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,7 +24,13 @@ class MyHome extends StatefulWidget {
 
 class _MyHomeState extends State<MyHome> {
   File? image;
-
+  final User? user = Auth().currentUser!;
+  Future<void> signOut()async{
+    FirebaseAuth.instance.signOut();
+    print(Auth().currentUser?.email);
+    await Auth().signOut();
+    Navigator.pop(context);
+  }
   Future pickImage() async{
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -47,31 +59,97 @@ class _MyHomeState extends State<MyHome> {
   loadData() async{
     dataList = dbHelper!.getDataList();
   }
-
+  double  _drawerIconSize = 24;
+  double _drawerFontSize = 17;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.blueGrey,
 
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: ()async{
-              var thereIsPic =  await Navigator.push(context,
-                   MaterialPageRoute(
-                      builder: (context)=>HomeProfile()
-                  )
-              );
-              // if(thereIsPic == null){
-              //   this.image = imageTempHolder;
-              // }
-            },
-
-            icon: Icon (Icons.account_circle),
-
+        title: Text("Home Page",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        title: const Text("Todo"),
-        centerTitle: true,
+        elevation: 0.5,
+        iconTheme: IconThemeData(color: Colors.white),
+        flexibleSpace:Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[Theme.of(context).primaryColor, Theme.of(context).accentColor,]
+              )
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        child: Container(
+          decoration:BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.0, 1.0],
+                  colors: [
+                    Theme.of(context).primaryColor.withOpacity(0.2),
+                    Theme.of(context).accentColor.withOpacity(0.5),
+                  ]
+              )
+          ) ,
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.0, 1.0],
+                    colors: [ Theme.of(context).primaryColor,Theme.of(context).accentColor,],
+                  ),
+                ),
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  child: Text("Dumduma",
+                    style: TextStyle(fontSize: 25,color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.home_filled, size: _drawerIconSize, color: Theme.of(context).accentColor,),
+                title: Text('Home Page', style: TextStyle(fontSize: 17, color: Theme.of(context).accentColor),),
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHome()));
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.account_circle_rounded,size: _drawerIconSize,color: Theme.of(context).accentColor),
+                title: Text('Profile Page', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).accentColor),
+                ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+                },
+              ),
+              Divider(color: Theme.of(context).primaryColor, height: 1,),
+              ListTile(
+                leading: Icon(Icons.school, size: _drawerIconSize,color: Theme.of(context).accentColor),
+                title: Text('Student Educational Information',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).accentColor),),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => EducProfile()),);
+                },
+              ),
+              Divider(color: Theme.of(context).primaryColor, height: 1,),
+              ListTile(
+                leading: Icon(Icons.logout_rounded, size: _drawerIconSize,color: Theme.of(context).accentColor,),
+                title: Text('Logout',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).accentColor),),
+                onTap: () {
+                  signOut();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
 
+                },
+              ),
+            ],
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -118,10 +196,10 @@ class _MyHomeState extends State<MyHome> {
                           child: Container(
                             margin: const EdgeInsets.all(5),
                             decoration: const BoxDecoration(
-                              color: Colors.blueGrey,
+                              color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.blueGrey,
+                                  color: Colors.purple,
                                   blurRadius: 4,
                                   spreadRadius: 1
                                 )
@@ -217,7 +295,6 @@ class _MyHomeState extends State<MyHome> {
                 )
             );
           },
-          backgroundColor: Colors.blueGrey,
           icon: const Icon(Icons.edit),
           label: const Text("Add Reminder")
       ),
